@@ -1,10 +1,13 @@
 package DAM1_7_5_RGD
 
 import com.zaxxer.hikari.HikariDataSource
+import oracle.sql.DATE
 import java.sql.Connection
+import java.sql.Date
 import java.sql.DriverManager
+import javax.print.DocFlavor.STRING
 
-data class Book(val id: String)
+data class Book(val id: String, val AUTHOR: String, val TITLE: String, val GENRE: String, val PRICE: Int, val PUBLISH_DATE: Date, val DESCRIPTION: String)
 
 fun main() {
 
@@ -23,7 +26,6 @@ fun main() {
 
      */
 
-
     val connection = DriverManager
         .getConnection(jdbcUrl, username, password)
 
@@ -33,12 +35,34 @@ fun main() {
     val result = query.executeQuery()
     val libros = mutableListOf<Book>()
 
+    //idLibro es la id del libro a buscar
+    val idLibro = "bk101"
+    //Y esta es la variable que voy a usar que indicará si al final del bucle ha de imprimirse la información del libro
+    var imprimir: Boolean = false
+
     while(result.next()){
-    //println(result.getString("id"))
-        val id = result.getString("AUTHOR")
-        libros.add(Book(id))
+
+        val id = result.getString("ID")
+        val author = result.getString("AUTHOR")
+        val title = result.getString("TITLE")
+        val genre = result.getString("GENRE")
+        val price = result.getInt("PRICE")
+        val publish_date = result.getDate("PUBLISH_DATE")
+        val description = result.getString("DESCRIPTION")
+
+        if (id == idLibro) {
+            println("Existe el libro y su información es la siguiente: ")
+            imprimir = true
+        }
+        else {println("No existe el libro")}
+
+        libros.add(Book(id,author,title,genre,price,publish_date,description))
     }
 
-    println(libros)
+    if (imprimir == true) {println(libros)}
+
+
+
+
 
 }
