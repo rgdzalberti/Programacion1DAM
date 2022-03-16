@@ -1,3 +1,0 @@
-
-
-INSERT INTO book VALUES ("bk101","Gambardella, Matthew", "XML Developer's Guide", "Computer",44.95,2000-10-01,"An in-depth look at creating applications with XML.");

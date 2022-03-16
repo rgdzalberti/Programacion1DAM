@@ -13,8 +13,9 @@ repositories {
 }
 
 dependencies {
-    implementation("com.oracle.database.jdbc:ojdbc8:21.1.0.0")
+    implementation("com.oracle.database.jdbc:ojdbc8:21.5.0.0")
     implementation ("com.zaxxer:HikariCP:5.0.1")
+    implementation("org.slf4j:slf4j-api:1.7.36")
 }
 
 tasks.test {
