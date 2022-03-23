@@ -57,9 +57,9 @@ fun main() {
 class ConnectionBuilder {
     // TODO Auto-generated catch block
     lateinit var connection: Connection
-    private val jdbcURL = "jdbc:h2:mem:default"
-    private val jdbcUsername = ""
-    private val jdbcPassword = ""
+    private val jdbcURL = "jdbc:oracle:thin:@localhost:1521:XE"
+    private val jdbcUsername = "programacion"
+    private val jdbcPassword = "programacion"
 
     init {
         try {
