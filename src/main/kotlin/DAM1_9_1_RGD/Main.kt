@@ -1,11 +1,7 @@
-package DAM1_7_5_RGD
+package DAM1_9_1_RGD
 
-import com.zaxxer.hikari.HikariDataSource
-import oracle.sql.DATE
-import java.sql.Connection
 import java.sql.Date
 import java.sql.DriverManager
-import javax.print.DocFlavor.STRING
 
 data class Book(
     val id: String,

@@ -1,4 +1,4 @@
-package Ejercicio9CAMBIAR
+package DAM1_9_1_RGD
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -47,6 +47,9 @@ internal inline fun <reified O> String.fromJson(): O {
  * @property autor el nombre del autor.
  * @constructor crea un libro.
  */
+
+/* Ya está en la clase que se encarga de la BBDD
+
 internal data class Book(
     val id: String,
     val autor: String,
@@ -56,6 +59,8 @@ internal data class Book(
     val publish_date: Date,
     val description: String
 )
+
+ */
 
 internal fun main() {
 

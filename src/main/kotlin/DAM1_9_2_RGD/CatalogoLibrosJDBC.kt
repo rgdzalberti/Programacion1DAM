@@ -1,4 +1,4 @@
-package Ejercicio9CAMBIAR
+package DAM1_9_2_RGD
 
 class CatalogoLibrosJDBC(jdbc:String, user:String, password:String):GestorCatalogo {
 

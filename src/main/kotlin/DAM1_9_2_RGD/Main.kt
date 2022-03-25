@@ -6,7 +6,7 @@ package un9.jdbc.ejemplos.jdbcDAO
  *
  */
 
-import Ejercicio9CAMBIAR.MyUser
+import DAM1_9_2_RGD.MyUser
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
