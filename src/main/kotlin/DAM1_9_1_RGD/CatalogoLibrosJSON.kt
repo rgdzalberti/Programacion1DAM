@@ -48,9 +48,8 @@ internal inline fun <reified O> String.fromJson(): O {
  * @constructor crea un libro.
  */
 
-/* Ya está en la clase que se encarga de la BBDD
 
-internal data class Book(
+data class Book(
     val id: String,
     val autor: String,
     val title: String,
@@ -60,7 +59,7 @@ internal data class Book(
     val description: String
 )
 
- */
+
 
 internal fun main() {
 
