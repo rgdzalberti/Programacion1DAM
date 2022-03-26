@@ -1,11 +1,3 @@
-package un9.jdbc.ejemplos.jdbcDAO
-
-/**
- * https://stonesoupprogramming.com/2017/12/13/kotlin-jdbc-create-insert-query-and-truncate-tables/
- * https://levelup.gitconnected.com/how-to-access-database-with-kotlin-6b86f6680cd7
- *
- */
-
 import DAM1_9_2_RGD.MyUser
 import java.sql.Connection
 import java.sql.DriverManager
