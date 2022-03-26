@@ -1,7 +1,6 @@
 package SOBRAS.DAM1_9_2_RGD
 
 import DAM1_9_2_RGD.MyUser
-import un9.jdbc.ejemplos.jdbcDAO.UserDAO
 import java.sql.DriverManager
 import java.sql.SQLException
 
