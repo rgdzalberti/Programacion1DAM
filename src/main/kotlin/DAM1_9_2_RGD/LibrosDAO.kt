@@ -5,13 +5,14 @@ import un9.jdbc.ejemplos.jdbcDAO.UserDAO
 import java.sql.DriverManager
 import java.sql.SQLException
 
+
 class LibrosDAO(jdbc:String, user:String, password:String) {
 
-    private val connection = DriverManager.getConnection(jdbc, user, password)
+    private val c = DriverManager.getConnection(jdbc, user, password)
     private val books = mutableListOf<Book>()
 
     init{
-        val query = connection.prepareStatement("SELECT * FROM BOOKS")
+        val query = c.prepareStatement("SELECT * FROM BOOKS")
         val result = query.executeQuery()
         while (result.next()){
             val id = result.getString("id")
@@ -26,21 +27,34 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
         }
     }
 
+    companion object {
+        private const val SCHEMA = "default"
+        private const val TABLE = "USERS"
+        private const val TRUNCATE_TABLE_USERS_SQL = "TRUNCATE TABLE USERS"
+        private const val CREATE_TABLE_USERS_SQL =
+            "CREATE TABLE USERS (id  number(3) NOT NULL AUTO_INCREMENT,name varchar(120) NOT NULL,email varchar(220) NOT NULL,country varchar(120),PRIMARY KEY (id))"
+        private const val INSERT_USERS_SQL = "INSERT INTO USERS" + "  (name, email, country) VALUES " + " (?, ?, ?);"
+        private const val SELECT_USER_BY_ID = "select id,name,email,country from USERS where id =?"
+        private const val SELECT_ALL_USERS = "select * from USERS"
+        private const val DELETE_USERS_SQL = "delete from USERS where id = ?;"
+        private const val UPDATE_USERS_SQL = "update USERS set name = ?,email= ?, country =? where id = ?;"
+    }
+
     fun listOfBooks() = books.toList()
 
     fun prepareTable() {
         val metaData = c.metaData
-        val rs = metaData.getTables(null, UserDAO.SCHEMA, UserDAO.TABLE, null)
+        val rs = metaData.getTables(null, SCHEMA, TABLE, null)
 
         if (!rs.next()) createTable() else truncateTable()
     }
 
     private fun truncateTable() {
-        println(UserDAO.TRUNCATE_TABLE_USERS_SQL)
+        println(TRUNCATE_TABLE_USERS_SQL)
         // try-with-resource statement will auto close the connection.
         try {
             c.createStatement().use { st ->
-                st.execute(UserDAO.TRUNCATE_TABLE_USERS_SQL)
+                st.execute(TRUNCATE_TABLE_USERS_SQL)
             }
             //Commit the change to the database
             c.commit()
@@ -50,14 +64,14 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
     }
 
     private fun createTable() {
-        println(UserDAO.CREATE_TABLE_USERS_SQL)
+        println(CREATE_TABLE_USERS_SQL)
         // try-with-resource statement will auto close the connection.
         try {
             //Get and instance of statement from the connection and use
             //the execute() method to execute the sql
             c.createStatement().use { st ->
                 //SQL statement to create a table
-                st.execute(UserDAO.CREATE_TABLE_USERS_SQL)
+                st.execute(CREATE_TABLE_USERS_SQL)
             }
             //Commit the change to the database
             c.commit()
@@ -67,10 +81,10 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
     }
 
     fun insert(user: MyUser) {
-        println(UserDAO.INSERT_USERS_SQL)
+        println(INSERT_USERS_SQL)
         // try-with-resource statement will auto close the connection.
         try {
-            c.prepareStatement(UserDAO.INSERT_USERS_SQL).use { st ->
+            c.prepareStatement(INSERT_USERS_SQL).use { st ->
                 st.setString(1, user.name)
                 st.setString(2, user.email)
                 st.setString(3, user.country)
@@ -88,7 +102,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
         var user: MyUser? = null
         // Step 1: Establishing a Connection
         try {
-            c.prepareStatement(UserDAO.SELECT_USER_BY_ID).use { st ->
+            c.prepareStatement(SELECT_USER_BY_ID).use { st ->
                 st.setInt(1, id)
                 println(st)
                 // Step 3: Execute the query or update query
@@ -115,7 +129,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
         val users: MutableList<MyUser> = ArrayList()
         // Step 1: Establishing a Connection
         try {
-            c.prepareStatement(UserDAO.SELECT_ALL_USERS).use { st ->
+            c.prepareStatement(SELECT_ALL_USERS).use { st ->
                 println(st)
                 // Step 3: Execute the query or update query
                 val rs = st.executeQuery()
@@ -140,7 +154,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
         var rowDeleted = false
 
         try {
-            c.prepareStatement(UserDAO.DELETE_USERS_SQL).use { st ->
+            c.prepareStatement(DELETE_USERS_SQL).use { st ->
                 st.setInt(1, id)
                 rowDeleted = st.executeUpdate() > 0
             }
@@ -156,7 +170,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
         var rowUpdated = false
 
         try {
-            c.prepareStatement(UserDAO.UPDATE_USERS_SQL).use { st ->
+            c.prepareStatement(UPDATE_USERS_SQL).use { st ->
                 st.setString(1, user.name)
                 st.setString(2, user.email)
                 st.setString(3, user.country)
@@ -169,6 +183,22 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
             printSQLException(e)
         }
         return rowUpdated
+    }
+
+    private fun printSQLException(ex: SQLException) {
+        for (e in ex) {
+            if (e is SQLException) {
+                e.printStackTrace(System.err)
+                System.err.println("SQLState: " + e.sqlState)
+                System.err.println("Error Code: " + e.errorCode)
+                System.err.println("Message: " + e.message)
+                var t = ex.cause
+                while (t != null) {
+                    println("Cause: $t")
+                    t = t.cause
+                }
+            }
+        }
     }
 
 }
