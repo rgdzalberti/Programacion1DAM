@@ -1,4 +1,4 @@
-package DAM1_9_2_RGD
+package SOBRAS.DAM1_9_2_RGD
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -47,7 +47,9 @@ internal inline fun <reified O> String.fromJson(): O {
  * @property autor el nombre del autor.
  * @constructor crea un libro.
  */
-internal data class Book(
+
+
+data class Book(
     val id: String,
     val autor: String,
     val title: String,
@@ -56,6 +58,8 @@ internal data class Book(
     val publish_date: Date,
     val description: String
 )
+
+
 
 internal fun main() {
 

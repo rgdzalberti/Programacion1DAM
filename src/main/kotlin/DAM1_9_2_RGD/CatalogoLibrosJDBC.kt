@@ -1,15 +1,31 @@
-package DAM1_9_2_RGD
+package SOBRAS.DAM1_9_2_RGD
 
-class CatalogoLibrosJDBC(jdbc:String, user:String, password:String):GestorCatalogo {
+class CatalogoLibrosJDBC(jdbc: String, user: String, password: String) : GestorCatalogo {
 
-    private val books = UserDAO(jdbc,user,password).getBookList()
+    val librosDAO = LibrosDAO(jdbc, user, password)
+    val books = librosDAO.listOfBooks()
 
     override fun existeLibro(idLibro: String): Boolean {
-        books.any {it.id == idLibro}
+        var existeLibro = false
+        books.forEach {
+            if (it.id == idLibro) {
+                existeLibro = true
+            }
+        }
+        return existeLibro
     }
 
     override fun infoLibro(idLibro: String): Map<String, Any> {
-       books.find {it.id == idLibro}.serializeToMap()
-    }
 
+        var mapaLibro = emptyMap<String, Any>()
+
+        books.forEach {
+            if (it.id == idLibro) {
+                mapaLibro = it.serializeToMap()
+            }
+
+        }
+        return mapaLibro
+
+    }
 }
