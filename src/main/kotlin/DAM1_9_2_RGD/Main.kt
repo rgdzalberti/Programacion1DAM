@@ -1,4 +1,4 @@
-import DAM1_9_2_RGD.MyUser
+import DAM1_9_2_RGD.MyBook
 import SOBRAS.DAM1_9_2_RGD.CatalogoLibrosJDBC
 import SOBRAS.DAM1_9_2_RGD.LibrosDAO
 import java.sql.ConnectionBuilder
@@ -22,14 +22,14 @@ fun main() {
             // Insertamos 4 usuarios
             repeat(4)
             {
-                h2DAO.insert(MyUser(name = "Edu", email = "falto", country = "spain"))
+                h2DAO.insert(MyBook(id = "23456", author = "Ricardo", title = "LibrosDAO", genre = "Genero2", price = "6.66", publish_date = "20/03/2003","LibrosDAO"))
             }  // Buscar un usuario
             var u = h2DAO.selectById(1)
 
             // Actualizar un usuario
             if (u!=null)
             {
-                u.name = "Nuevo usuario"
+                u.id = "12345"
                 h2DAO.update(u)
             }
             // Borrar un usuario
@@ -37,6 +37,8 @@ fun main() {
 
             // Seleccionar todos los usuarios
             println(h2DAO.selectAll())
+
+
         }
     } else
         println("Conexión ERROR")
