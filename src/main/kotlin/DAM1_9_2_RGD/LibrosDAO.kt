@@ -75,7 +75,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
             }
             //Commit the change to the database
             //linea de abajo eliminar?
-            //c.setAutoCommit(false)
+            c.setAutoCommit(false)
             c.commit()
         } catch (e: SQLException) {
             printSQLException(e)
@@ -166,7 +166,16 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
 
                 // Step 4: Process the ResultSet object.
                 while (rs.next()) {
-                    val id = rs.getString("12345")
+                    val id = rs.getString("id")
+                    val author = rs.getString("author")
+                    val title = rs.getString("title")
+                    val genre = rs.getString("genre")
+                    val price = rs.getString("price")
+                    val publish_date = rs.getString("publish_date")
+                    val description = rs.getString("description")
+                    BOOKS.add(MyBook(id,author,title,genre,price,publish_date,description))
+                    /*
+                                        val id = rs.getString("12345")
                     val author = rs.getString("Ricardo")
                     val title = rs.getString("El ejercicio de inglés")
                     val genre = rs.getString("Literario")
@@ -174,6 +183,7 @@ class LibrosDAO(jdbc:String, user:String, password:String) {
                     val publish_date = rs.getString("20/03/2000")
                     val description = rs.getString("Que libro más bueno")
                     BOOKS.add(MyBook(id,author,title,genre,price,publish_date,description))
+                     */
                 }
             }
 
