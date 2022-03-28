@@ -1,14 +1,15 @@
 import DAM1_9_2_RGD.MyBook
-import SOBRAS.DAM1_9_2_RGD.CatalogoLibrosJDBC
 import SOBRAS.DAM1_9_2_RGD.LibrosDAO
-import java.sql.ConnectionBuilder
+import java.sql.Date
 import java.sql.DriverManager
+
 
 fun main() {
     val c = DriverManager
         .getConnection("jdbc:oracle:thin:@localhost:1521:XE", "programacion", "programacion")
     //val c = LibrosDAO("jdbc:oracle:thin:@localhost:1521:XE", "programacion", "programacion")
     println("conectando.....")
+
 
     if (c.isValid(10)) {
         println("Conexión válida")
@@ -19,21 +20,21 @@ fun main() {
             // Creamos la tabla o la vaciamos si ya existe
             h2DAO.prepareTable()
 
-            // Insertamos 4 usuarios
+            // Insertamos 4 libros
             repeat(4)
             {
-                h2DAO.insert(MyBook(id = "23456", author = "Ricardo", title = "LibrosDAO", genre = "Genero2", price = "6.66", publish_date = "20/03/2003","LibrosDAO"))
+                h2DAO.insert(MyBook(id = "23456", author = "Ricardo", title = "LibrosDAO", genre = "Genero2", price = 6.66, publish_date = Date(2000,1,30),"LibrosDAO"))
             }  // Buscar un usuario
-            var u = h2DAO.selectById(1)
+            var b = h2DAO.selectById("1")
 
             // Actualizar un usuario
-            if (u!=null)
+            if (b!=null)
             {
-                u.id = "12345"
-                h2DAO.update(u)
+                b.author = "Camila"
+                h2DAO.update(b)
             }
             // Borrar un usuario
-            h2DAO.deleteById(2)
+            h2DAO.deleteById("2")
 
             // Seleccionar todos los usuarios
             println(h2DAO.selectAll())

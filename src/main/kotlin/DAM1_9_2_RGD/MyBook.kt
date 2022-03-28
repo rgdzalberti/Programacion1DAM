@@ -1,5 +1,13 @@
 package DAM1_9_2_RGD
 
-data class MyBook(var id: String = "0", var author: String, var title: String, var genre: String, var price: String, var publish_date: String, var description: String)
+import java.sql.Date
 
-//data class MyUser(val id: Int = -1, var name: String, var email: String, var country: String)
+data class MyBook(
+    var id: String,
+    var author: String,
+    var title: String,
+    var genre: String,
+    var price: Double,
+    var publish_date: Date,
+    var description: String
+    )
