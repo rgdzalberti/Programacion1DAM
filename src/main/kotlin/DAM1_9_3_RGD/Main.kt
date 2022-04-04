@@ -52,15 +52,19 @@ fun main() {
                 var a = tiendasDAO.selectById(k)
 
                 //Para cada fila de tiendasDAO imprimo todas las filsa de Inventario que correspondan con su ID
+                println("=======================================")
                 println(a)
                 for (i in 1..6) {
                     var b = inventariosDAO.selectById(i)
                     if (b != null) {
                         if (b.id_tienda == k) {
+                            println("---------------------------------------")
                             println(b)
+                            println("---------------------------------------")
                         }
                     }
                 }
+                println("=======================================")
             }
         }
     } else
