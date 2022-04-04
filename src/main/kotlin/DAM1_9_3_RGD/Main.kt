@@ -1,40 +1,33 @@
-package SOBRAS
+package DAM1_9_3_RGD
 
 import java.sql.Date
 import java.sql.DriverManager
 
-data class Book(
-    val id: String,
-    val AUTHOR: String,
-    val TITLE: String,
-    val GENRE: String,
-    val PRICE: Int,
-    val PUBLISH_DATE: Date,
-    val DESCRIPTION: String
+data class Tiendas(
+    val id: Int,
+    val NOMBRE: String,
+    val DIRECCION: String
+)
+
+data class Inventarios(
+    val id_articulo: Int,
+    val Nombre: String,
+    val Comentario: String,
+    val Precio: Double,
+    val id_tienda: Int,
 )
 
 fun main() {
-
-    //Me da error el dataSource
-    //val dataSource = HikariDataSource()
 
     val jdbcUrl = "jdbc:oracle:thin:@localhost:1521:XE"
     val username = "programacion"
     val password = "programacion"
 
-    /*
-
-    dataSource.jdbcUrl = "jdbc:oracle:thin:@localhost:1521:XE"
-    dataSource.username = "programacion"
-    dataSource.password = "programacion"
-
-     */
-
     val connection = DriverManager
         .getConnection(jdbcUrl, username, password)
 
-    //println(connection.isValid(0))
 
+    /*
     val query = connection.prepareStatement("SELECT * FROM BOOKS")
     val result = query.executeQuery()
     val libros = mutableListOf<Book>()
@@ -67,6 +60,8 @@ fun main() {
     } else {
         println("El libro no existe")
     }
+
+     */
 
 
 }
