@@ -48,12 +48,20 @@ fun main() {
             tiendasDAO.selectAll().forEach { limiteTiendas++ }
 
             //Hago un bucle en el que reviso cada fila y compruebo que cumplan la condicion para actualizarlo
+            /*
             for (i in 1..limiteInventarios) {
                 var b = inventariosDAO.selectById(i)
 
                 if (b != null && b.Precio > 2000) {
                     b.Precio = b.Precio * 1.15
                     inventariosDAO.update(b)
+                }
+            }
+             */
+            //Intento hacerlo de otra manera para que la excepción no salte pero sigue
+            inventariosDAO.selectAll().forEach {
+                if (it.Precio > 2000) {
+                    it.Precio = it.Precio * 1.15; inventariosDAO.update(it)
                 }
             }
 
@@ -81,5 +89,6 @@ fun main() {
 
 
 }
+
 
 
