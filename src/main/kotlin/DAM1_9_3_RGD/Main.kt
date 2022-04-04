@@ -1,5 +1,6 @@
 package DAM1_9_3_RGD
 
+import SOBRAS.DAM1_9_2_RGD.LibrosDAO
 import java.sql.Date
 import java.sql.DriverManager
 
@@ -13,7 +14,7 @@ data class Inventarios(
     val id_articulo: Int,
     val Nombre: String,
     val Comentario: String,
-    val Precio: Double,
+    var Precio: Double,
     val id_tienda: Int,
 )
 
@@ -26,42 +27,42 @@ fun main() {
     val connection = DriverManager
         .getConnection(jdbcUrl, username, password)
 
+    if (connection.isValid(10)) {
+        println("Conexión válida")
 
-    /*
-    val query = connection.prepareStatement("SELECT * FROM BOOKS")
-    val result = query.executeQuery()
-    val libros = mutableListOf<Book>()
+        connection.use {
+            val inventariosDAO = InventariosDAO(jdbcUrl, username, password)
+            val tiendasDAO = TiendasDAO(jdbcUrl, username, password)
 
-    //idLibro es la id del libro a buscar
-    val idLibro = "bk101"
-    //Y esta es la variable que voy a usar que indicará si al final del bucle ha de imprimirse la información del libro
-    var imprimir: Boolean = false
+            //Hago un bucle en el que reviso cada fila y compruebo que cumplan la condicion para actualizarlo
+            //Meter un until to las id de la tabla < - QUITAR
+            for (i in 1..6) {
+                var b = inventariosDAO.selectById(i)
 
-    while (result.next()) {
+                if (b != null) {
+                    if (b.Precio > 2000) {
+                        b.Precio = b.Precio * 1.15
+                        inventariosDAO.update(b)
+                    }
+                }
+            }
 
-        val id = result.getString("ID")
-        val author = result.getString("AUTHOR")
-        val title = result.getString("TITLE")
-        val genre = result.getString("GENRE")
-        val price = result.getInt("PRICE")
-        val publish_date = result.getDate("PUBLISH_DATE")
-        val description = result.getString("DESCRIPTION")
+            //Muestro los inventarios por tiendas
+            for (k in 1..5) {
+                var a = tiendasDAO.selectById(k)
 
-        if (id == idLibro) {
-            imprimir = true
+                //Para cada fila de tiendasDAO imprimo todas las filsa de Inventario que correspondan con su ID
+                println(a)
+                for (i in 1..6) {
+                    var b = inventariosDAO.selectById(i)
+                    if (b != null) {
+                        if (b.id_tienda == k) {
+                            println(b)
+                        }
+                    }
+                }
+            }
         }
-
-        libros.add(Book(id, author, title, genre, price, publish_date, description))
-    }
-
-    if (imprimir == true) {
-        println("Existe el libro y su información es la siguiente: ")
-        println(libros)
-    } else {
-        println("El libro no existe")
-    }
-
-     */
-
-
+    } else
+        println("Conexión ERROR")
 }
