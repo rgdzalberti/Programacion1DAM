@@ -1,25 +1,12 @@
 package DAM1_9_3_RGD;
 
-import DAM1_9_2_RGD.MyBook
-import java.sql.DriverManager
+import java.sql.Connection
 import java.sql.SQLException
 
-class TiendasDAO(jdbc:String, user:String, password:String) {
+class TiendasDAO(val c: Connection) {
 
-    private val c = DriverManager.getConnection(jdbc,user,password)
     private val tiendas = mutableListOf<Tiendas>()
 
-    init{
-        val query = c.prepareStatement("SELECT * FROM TIENDAS")
-        val result = query.executeQuery()
-        while (result.next()){
-            val id = result.getInt("id_tienda")
-            val nombre = result.getString("nombre_tienda")
-            val direccion = result.getString("direccion_tienda")
-
-            tiendas.add(Tiendas(id,nombre,direccion))
-        }
-    }
 
     companion object {
         private const val SCHEMA = "default"
@@ -27,21 +14,19 @@ class TiendasDAO(jdbc:String, user:String, password:String) {
         private const val TRUNCATE_TABLE_TIENDAS_SQL = "TRUNCATE TABLE TIENDAS"
         private const val CREATE_TABLE_TIENDAS_SQL =
             "CREATE TABLE TIENDAS (ID_TIENDA NUMBER(10,0) CONSTRAINT PK_ID_TIENDA PRIMARY KEY, NOMBRE_TIENDA VARCHAR2(40), DIRECCION_TIENDA VARCHAR2(200) )"
-        private const val INSERT_TIENDAS_SQL = "INSERT INTO TIENDAS" + "  (id,nombre,direccion) VALUES " + " (?, ?, ?)"
+        private const val INSERT_TIENDAS_SQL = "INSERT INTO TIENDAS" + "  (ID_TIENDA,NOMBRE_TIENDA,DIRECCION_TIENDA) VALUES " + " (?, ?, ?)"
         private const val SELECT_USER_BY_ID = "select id_tienda,nombre_tienda,direccion_tienda from TIENDAS where id_tienda =?"
         private const val SELECT_ALL_TIENDAS = "select * from TIENDAS"
         private const val DELETE_TIENDAS_SQL = "delete from TIENDAS where id_tienda = ?"
         private const val UPDATE_TIENDAS_SQL = "update TIENDAS set nombre_tienda = ?,direccion_tienda= ? where id_tienda = ?"
     }
 
-    fun listOfTiendas() = tiendas.toList()
-
     fun prepareTable() {
         val metaData = c.metaData
         c.setAutoCommit(false)
         val rs = metaData.getTables(null, SCHEMA, TABLE, null)
 
-        if (!rs.next()) truncateTable() else createTable()
+        if (rs.next()) truncateTable() else createTable()
     }
 
     private fun truncateTable() {
@@ -82,7 +67,7 @@ class TiendasDAO(jdbc:String, user:String, password:String) {
         // try-with-resource statement will auto close the connection.
         try {
             c.prepareStatement(INSERT_TIENDAS_SQL).use { st ->
-                st.setInt(1, tienda.id)
+                st.setInt(1, tienda.ID)
                 st.setString(2, tienda.NOMBRE)
                 st.setString(3, tienda.DIRECCION)
                 println(st)
@@ -167,7 +152,7 @@ class TiendasDAO(jdbc:String, user:String, password:String) {
 
         try {
             c.prepareStatement(UPDATE_TIENDAS_SQL).use { st ->
-                st.setInt(1, tienda.id)
+                st.setInt(1, tienda.ID)
                 st.setString(2, tienda.NOMBRE)
                 st.setString(3, tienda.DIRECCION)
                 rowUpdated = st.executeUpdate() > 0

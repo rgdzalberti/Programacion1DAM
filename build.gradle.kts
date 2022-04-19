@@ -19,6 +19,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("com.github.jparsec:jparsec-g:1.0")
     implementation ("io.github.microutils:kotlin-logging-jvm:2.1.20")
+    implementation("com.h2database:h2:2.1.212")
 }
 
 tasks.test {
